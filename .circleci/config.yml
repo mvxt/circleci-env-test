@@ -17,8 +17,12 @@ orbs:
             type: string
         steps:
           - checkout
-          - run: echo "Echoing TEST_VAR_ONE: $TEST_VAR_ONE"
-          - run: echo "Echoing TEST_VAR_TWO: $TEST_VAR_TWO"
+          - run:
+              command: |
+                echo "Echoing TEST_VAR_ONE: $TEST_VAR_ONE"
+          - run:
+              command: |
+                echo "Echoing TEST_VAR_TWO: $TEST_VAR_TWO"
           - run: sh blah.sh
 
 workflows:
