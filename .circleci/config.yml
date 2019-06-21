@@ -5,6 +5,8 @@ orbs:
     jobs:
       test-env-interp:
         description: "Testing whether it's possible to interpolate params into env vars"
+        docker:
+          - image: bash:4.4.19
         environment:
           TEST_VAR_ONE: << parameters.test-var-one >>
           TEST_VAR_TWO: ${<< parameters.test-var-two >>}
