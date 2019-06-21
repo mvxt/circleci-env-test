@@ -1,0 +1,31 @@
+version: 2.1
+
+orbs:
+  mvxt-test:
+    jobs:
+      test-env-interp:
+        description: "Testing whether it's possible to interpolate params into env vars"
+        environment:
+          TEST_VAR_ONE: << parameters.test-var-one >>
+          TEST_VAR_TWO: ${<< parameters.test-var-two >>}
+        parameters:
+          test-var-one:
+            description: "Test var one"
+            type: string
+          test-var-two:
+            description: "Test var two"
+            type: string
+        steps:
+          - checkout
+          - run: echo "Echoing TEST_VAR_ONE: $TEST_VAR_ONE"
+          - run: echo "Echoing TEST_VAR_TWO: $TEST_VAR_TWO"
+          - run: sh blah.sh
+
+workflows:
+  version: 2.1
+  build-deploy:
+    jobs:
+      - mvxt-test/test-env-interp:
+          test-var-one: "String1"
+          test-var-two: "String2"
+
