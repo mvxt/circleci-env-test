@@ -27,6 +27,21 @@ orbs:
                 echo "Echoing TEST_VAR_TWO: $TEST_VAR_TWO"
           - run: sh blah.sh
 
+jobs:
+  test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          command: echo $TEST_VAR
+      - run:
+          command: echo "test_var=$TEST_VAR"
+      - run:
+          command: |
+            cat test.sh
+            ./test.sh
+
 workflows:
   version: 2.1
   build-deploy:
@@ -34,4 +49,5 @@ workflows:
       - mvxt-test/test-env-interp:
           test-var-one: "String1"
           test-var-two: "String2"
-
+      - test:
+          context: mvxt-prod
