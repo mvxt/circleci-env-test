@@ -41,6 +41,13 @@ jobs:
           command: |
             cat test.sh
             ./test.sh
+  mac-test:
+    macos:
+      xcode: "11.3.0"
+    steps:
+      - checkout
+      - run: which java
+      - run: which gradle
 
 workflows:
   version: 2.1
@@ -51,3 +58,4 @@ workflows:
           test-var-two: "String2"
       - test:
           context: mvxt-prod
+      - mac-test
