@@ -47,7 +47,15 @@ jobs:
     steps:
       - checkout
       - run: which java
-      - run: which gradle
+  executor-param-test:
+    parameters:
+      image:
+        description: "Docker image to use"
+        type: string
+    docker:
+      - image: << parameters.image >>
+    steps:
+      - run: echo "Hello, world!"
 
 workflows:
   version: 2.1
@@ -59,3 +67,8 @@ workflows:
       - test:
           context: mvxt-prod
       - mac-test
+      - executor-param-test:
+          image: "circleci/node:10.15.1"
+      - executor-param-test:
+          image: "circleci/golang:1.12.4"
+
