@@ -63,7 +63,7 @@ jobs:
         name: "backend"
     steps:
       - run: sleep 5
-      - run: ssh root@localhost ls -al
+      - run: ssh root@backend ls -al
 
 workflows:
   version: 2.1
