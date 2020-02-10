@@ -59,11 +59,11 @@ jobs:
   docker-commands-test:
     docker:
       - image: cimg/base:stable
-      - image: mikeyvxt/circleci-demo-backend 
+      - image: mikeyvxt/ci-cd-101-workshop:latest
         name: "backend"
     steps:
       - run: sleep 5
-      - run: ssh root@localhost:8080 ls -al
+      - run: ssh root@localhost ls -al
 
 workflows:
   version: 2.1
