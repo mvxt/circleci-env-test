@@ -60,7 +60,7 @@ jobs:
     docker:
       - image: cimg/base:stable
       - image: ubuntu/alpine
-          name: ubuntu
+        name: "ubuntu"
     steps:
       - run: sleep 5
       - run: docker exec -it ubuntu ls -al
