@@ -56,14 +56,6 @@ jobs:
       - image: << parameters.image >>
     steps:
       - run: echo "Hello, world!"
-  docker-commands-test:
-    docker:
-      - image: cimg/base:stable
-      - image: mikeyvxt/test-repo:latest
-        name: "backend"
-    steps:
-      - run: sleep 5
-      - run: ssh nginx@backend ls -al
 
 workflows:
   version: 2.1
@@ -79,5 +71,4 @@ workflows:
           image: "circleci/node:10.15.1"
       - executor-param-test:
           image: "circleci/golang:1.12.4"
-      - docker-commands-test
 
