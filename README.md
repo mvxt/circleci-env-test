@@ -1,4 +1,4 @@
-# CircleCI Env Test
+# CircleCI Env Test [![CircleCI](https://circleci.com/gh/mvxt/circleci-env-test.svg?style=shield&circle-token=dc8cf1a22e1f456d95198810be3ec5c9b0a29a65)](https://circleci.com/gh/mvxt/circleci-env-test)
 
 A demo repository for testing various different, specific use cases and functionalities in CircleCI. All configuration can be found in `.circleci/config.yml`.
 
