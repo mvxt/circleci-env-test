@@ -47,6 +47,7 @@ workflows:
       - executor-param-test:
           name: test-go-job
           image: "circleci/golang:1.12.4"
+      - cache-test
 
 ##################
 # Job Definitions
@@ -74,4 +75,18 @@ jobs:
       - image: << parameters.image >>
     steps:
       - run: echo "Hello, world!"
+
+  cache-test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ .Branch }}
+            - v1-dependencies-
+      - run: ./test.sh
+      - save_cache:
+          key: v1-dependencies-{{ .Branch }}
+          paths: ./*
 
