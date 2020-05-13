@@ -1,9 +1,25 @@
 version: 2.1
 
 #############
-# Inline Orb
+# Executors
+#############
+executors:
+  docker:
+    docker:
+      - image: cimg/base:2020.01
+  linux:
+    machine:
+      image: ubuntu-1604:202004-01
+  macos:
+    macos:
+      xcode: 11.4
+
+#############
+# Orbs
 #############
 orbs:
+  win: circleci/windows@2.4.0
+
   mvxt-test:
     jobs:
       test-env-interp:
@@ -48,6 +64,13 @@ workflows:
           name: test-go-job
           image: "circleci/golang:1.12.4"
       - cache-test
+  matrix-test:
+    jobs:
+      - matrix-test:
+          matrix:
+            parameters:
+              os: [docker, linux, macos, win/default]
+              subject: ["World", "Friend", "Baby"]
 
 ##################
 # Job Definitions
@@ -66,6 +89,7 @@ jobs:
           command: |
             cat test.sh
             ./test.sh
+
   executor-param-test:
     parameters:
       image:
@@ -90,3 +114,13 @@ jobs:
           key: v1-dependencies-{{ .Branch }}
           paths: ./*
 
+  matrix-test:
+    parameters:
+      os:
+        type: string
+      subject:
+        type: string
+    executor: << parameters.os >>
+    steps:
+      - checkout
+      - run: echo "Hello << parameters.subject >>!"
