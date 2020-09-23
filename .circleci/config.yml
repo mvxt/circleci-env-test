@@ -64,6 +64,7 @@ workflows:
           name: test-go-job
           image: "circleci/golang:1.12.4"
       - cache-test
+      - db-test
   matrix-test:
     jobs:
       - matrix-test:
@@ -124,3 +125,14 @@ jobs:
     steps:
       - checkout
       - run: echo "Hello << parameters.subject >>!"
+
+  db-test:
+    executor: docker
+    docker:
+      - image: circleci/postgres:9.6
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circle_test
+          POSTGRES_HOST_AUTH_METHOD: trust
+    steps:
+      run: echo "Hello World!"
