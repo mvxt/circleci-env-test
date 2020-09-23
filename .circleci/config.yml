@@ -13,6 +13,14 @@ executors:
   macos:
     macos:
       xcode: 11.4
+  db-test:
+    docker:
+      - image: cimg/base:2020.01
+      - image: circleci/postgres:9.6
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circle_test
+          POSTGRES_HOST_AUTH_METHOD: trust
 
 #############
 # Orbs
@@ -127,12 +135,6 @@ jobs:
       - run: echo "Hello << parameters.subject >>!"
 
   db-test:
-    executor: docker
-    docker:
-      - image: circleci/postgres:9.6
-        environment:
-          POSTGRES_USER: circleci
-          POSTGRES_DB: circle_test
-          POSTGRES_HOST_AUTH_METHOD: trust
+    executor: db-test
     steps:
       - run: sleep 10 && echo "Hello World!"
