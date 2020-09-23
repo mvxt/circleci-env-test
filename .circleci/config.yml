@@ -135,4 +135,4 @@ jobs:
           POSTGRES_DB: circle_test
           POSTGRES_HOST_AUTH_METHOD: trust
     steps:
-      run: echo "Hello World!"
+      - run: echo "Hello World!"
