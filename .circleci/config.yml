@@ -77,6 +77,7 @@ workflows:
       - cache-test
       - db-test
       - runner-test
+      - dlc-test
   matrix-test:
     jobs:
       - matrix-test:
@@ -102,6 +103,13 @@ jobs:
           command: |
             cat test.sh
             ./test.sh
+
+  dlc-test:
+    machine:
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - run: echo "Hello!" && sleep 10
 
   executor-param-test:
     parameters:
