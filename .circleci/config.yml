@@ -21,9 +21,12 @@ executors:
           POSTGRES_USER: circleci
           POSTGRES_DB: circle_test
           POSTGRES_HOST_AUTH_METHOD: trust
-  runner-test:
+  runner-test1:
     machine: true
     resource_class: mvxt/ubuntu-arm
+  runner-test2:
+    machine: true
+    resource_class: mvxt/centos-runner
 
 #############
 # Orbs
@@ -76,7 +79,8 @@ workflows:
           image: "circleci/golang:1.12.4"
       - cache-test
       - db-test
-      - runner-test
+      - runner-centos1-test
+      - runner-centos2-test
       - dlc-test
   matrix-test:
     jobs:
@@ -151,8 +155,13 @@ jobs:
     steps:
       - run: sleep 10 && echo "Hello World!"
 
-  runner-test:
-    executor: runner-test
+  runner-centos1-test:
+    executor: runner-test1
+    steps:
+      - checkout
+      - run: echo "Running on a Ubuntu ARM runner!"
+  runner-centos2-test:
+    executor: runner-test2
     steps:
       - checkout
       - run: echo "Running on a Ubuntu ARM runner!"
