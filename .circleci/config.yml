@@ -12,10 +12,6 @@ parameters:
     description: Whether to initiate deployment
     type: boolean
     default: false
-  env:
-    description: Which environment to be deployed to
-    type: string
-    default: ""
 
 #############
 # Executors
@@ -126,11 +122,12 @@ workflows:
               subject: ["World", "Friend", "Baby"]
 
   deploy:
-    name: deploy-<< pipeline.parameters.env >>
     when: << pipeline.parameters.deploy >>
     jobs:
       - deploy:
-          env: << pipeline.parameters.env >>
+          matrix:
+            parameters:
+              env: ["AU", "EU", "Int", "Prod", "SA", "SEA"]
 
 ##################
 # Job Definitions
@@ -216,13 +213,10 @@ jobs:
       - run:
           name: API Calls to trigger deploy workflow for each environment
           command: |
-            declare -a Envs=("AU" "EU" "Int" "Prod" "SA" "SEA")
-            for environment in "${Envs[@]}"; do \
-              curl -u ${CIRCLE_TOKEN}: -X POST https://circleci.com/api/v2/project/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pipeline \
-                -H 'Content-Type: application/json' \
-                -H 'Accept: application/json' \
-                -d '{"branch": "'"${CIRCLE_BRANCH}"'", "parameters": {"run_tests": false, "deploy": true, "env": "'"${environment}"'"}}'; \
-            done;
+            curl -u ${CIRCLE_TOKEN}: -X POST https://circleci.com/api/v2/project/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pipeline \
+              -H 'Content-Type: application/json' \
+              -H 'Accept: application/json' \
+              -d '{"branch": "'"${CIRCLE_BRANCH}"'", "parameters": {"run_tests": false, "deploy": true}}'
 
   deploy:
     parameters:
