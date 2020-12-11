@@ -125,7 +125,8 @@ workflows:
               os: [docker, linux, macos, win/default]
               subject: ["World", "Friend", "Baby"]
 
-  deploy-<< pipeline.parameters.env >>:
+  deploy:
+    name: deploy-<< pipeline.parameters.env >>
     when: << pipeline.parameters.deploy >>
     jobs:
       - deploy:
