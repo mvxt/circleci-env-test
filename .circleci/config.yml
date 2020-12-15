@@ -205,7 +205,7 @@ jobs:
     executor: runner-test2
     steps:
       - checkout
-      - run: echo "Running on a Ubuntu ARM runner!"
+      - run: echo "Running on a CentOS runner!"
 
   trigger-deploys:
     executor: docker
