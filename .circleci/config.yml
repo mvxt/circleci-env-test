@@ -94,40 +94,40 @@ workflows:
       - cache-test
       - db-test
         #- runner-centos1-test
-      - runner-centos2-test
+        #- runner-centos2-test
       - dlc-test
-      #- approve:
-      #    type: approval
-      #    requires:
-      #      - test
-      #    filters:
-      #      branches:
-      #        only: master
-      #- trigger-deploys:
-      #    requires:
-      #      - approve
-      #    context:
-      #      - circle-api
-      #    filters:
-      #      branches:
-      #        only: master
+      - approve:
+          type: approval
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
+      - trigger-deploys:
+          requires:
+            - approve
+          context:
+            - circle-api
+          filters:
+            branches:
+              only: master
 
-  # matrix-test:
-    # when: << pipeline.parameters.run_tests >>
-    # jobs:
-      # - matrix-test:
-        # matrix:
-            #parameters:
-              #os: [docker, linux, macos, win/default]
-              #subject: ["World", "Friend", "Baby"]
+  matrix-test:
+    when: << pipeline.parameters.run_tests >>
+    jobs:
+      - matrix-test:
+          matrix:
+            parameters:
+              os: [docker, linux, macos, win/default]
+              subject: ["World", "Friend", "Baby"]
 
-  #deploy:
-  #  when: << pipeline.parameters.deploy >>
-  #  jobs:
-  #    - deploy:
-  #        matrix:
-  #          parameters:
-  #            env: ["AU", "EU", "Int", "Prod", "SA", "SEA"]
+  deploy:
+    when: << pipeline.parameters.deploy >>
+    jobs:
+      - deploy:
+          matrix:
+            parameters:
+              env: ["AU", "EU", "Int", "Prod", "SA", "SEA"]
 
 ##################
 # Job Definitions
