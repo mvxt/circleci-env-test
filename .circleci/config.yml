@@ -80,6 +80,7 @@ workflows:
       - centos7-amd64
       - centos8-amd64
       - rhel8-amd64
+      - debian-stretch-amd64
 
   matrix-test:
     when: << pipeline.parameters.run_matrix >>
@@ -203,21 +204,28 @@ jobs:
     resource_class: mvxt/centos-runner
     steps:
       - checkout
-      - run: echo "Running on a CentOS 7 runner!"
+      - run: echo "Running on a CentOS 7 AMD64 runner!"
 
   centos8-amd64:
     machine: true
     resource_class: mvxt/centos8
     steps:
       - checkout
-      - run: echo "Running on a CentOS 8 runner!"
+      - run: echo "Running on a CentOS 8 AMD64 runner!"
 
   rhel8-amd64:
     machine: true
     resource_class: mvxt/rhel8
     steps:
       - checkout
-      - run: echo "Running on a RHEL 8 runner!"
+      - run: echo "Running on a RHEL 8 AMD64 runner!"
+
+  debian-stretch-amd64:
+    machine: true
+    resource_class: mvxt/debian-stretch
+    steps:
+      - checkout
+      - run: echo "Running on a Debian 9 (stretch) AMD64 runner!"
 
   trigger-deploys:
     executor: docker
