@@ -34,12 +34,6 @@ executors:
           POSTGRES_USER: circleci
           POSTGRES_DB: circle_test
           POSTGRES_HOST_AUTH_METHOD: trust
-  runner-centos7:
-    machine: true
-    resource_class: mvxt/centos-runner
-  runner-centos8:
-    machine: true
-    resource_class: mvxt/centos8
 
 #############
 # Orbs
@@ -79,8 +73,9 @@ workflows:
   version: 2.1
   runners-fleet:
     jobs:
-      - runner-centos7-amd64
-      - runner-centos8-amd64
+      - centos7-amd64
+      - centos8-amd64
+      - rhel8-amd64
 
   matrix-test:
     when: << pipeline.parameters.run_tests >>
@@ -199,17 +194,26 @@ jobs:
     steps:
       - run: sleep 10 && echo "Hello World!"
 
-  runner-centos7-amd64:
-    executor: runner-centos7
+  centos7-amd64:
+    machine: true
+    resource_class: mvxt/centos-runner
     steps:
       - checkout
       - run: echo "Running on a CentOS 7 runner!"
 
-  runner-centos8-amd64:
-    executor: runner-centos8
+  centos8-amd64:
+    machine: true
+    resource_class: mvxt/centos8
     steps:
       - checkout
       - run: echo "Running on a CentOS 8 runner!"
+
+  rhel8-amd64:
+    machine: true
+    resource_class: mvxt/rhel8
+    steps:
+      - checkout
+      - run: echo "Running on a RHEL 8 runner!"
 
   trigger-deploys:
     executor: docker
