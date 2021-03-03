@@ -37,9 +37,9 @@ executors:
   runner-centos7:
     machine: true
     resource_class: mvxt/centos-runner
-  runner-test2:
+  runner-centos8:
     machine: true
-    resource_class: mvxt/centos-runner
+    resource_class: mvxt/centos8
 
 #############
 # Orbs
@@ -77,7 +77,21 @@ orbs:
 ############
 workflows:
   version: 2.1
-  build-deploy:
+  runners-fleet:
+    jobs:
+      - runner-centos7-amd64
+      - runner-centos8-amd64
+
+  matrix-test:
+    when: << pipeline.parameters.run_tests >>
+    jobs:
+      - matrix-test:
+          matrix:
+            parameters:
+              os: [docker, linux, macos, win/default]
+              subject: ["World", "Friend", "Baby"]
+
+  build:
     when: << pipeline.parameters.run_tests >>
     jobs:
       - mvxt-test/test-env-interp:
@@ -93,8 +107,6 @@ workflows:
           image: "circleci/golang:1.12.4"
       - cache-test
       - db-test
-      - runner-centos-test
-        #- runner-centos2-test
       - dlc-test
       - approve:
           type: approval
@@ -111,15 +123,6 @@ workflows:
           filters:
             branches:
               only: master
-
-  matrix-test:
-    when: << pipeline.parameters.run_tests >>
-    jobs:
-      - matrix-test:
-          matrix:
-            parameters:
-              os: [docker, linux, macos, win/default]
-              subject: ["World", "Friend", "Baby"]
 
   deploy:
     when: << pipeline.parameters.deploy >>
@@ -196,17 +199,17 @@ jobs:
     steps:
       - run: sleep 10 && echo "Hello World!"
 
-  runner-centos-test:
+  runner-centos7-amd64:
     executor: runner-centos7
     steps:
       - checkout
       - run: echo "Running on a CentOS 7 runner!"
 
-  runner-centos2-test:
-    executor: runner-test2
+  runner-centos8-amd64:
+    executor: runner-centos8
     steps:
       - checkout
-      - run: echo "Running on a CentOS runner!"
+      - run: echo "Running on a CentOS 8 runner!"
 
   trigger-deploys:
     executor: docker
