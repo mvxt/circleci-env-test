@@ -7,7 +7,11 @@ parameters:
   run_tests:
     description: Whether to run test suites
     type: boolean
-    default: true
+    default: false
+  run_matrix:
+    description: Whether to run matrix jobs
+    type: boolean
+    default: false
   deploy:
     description: Whether to initiate deployment
     type: boolean
@@ -78,7 +82,7 @@ workflows:
       - rhel8-amd64
 
   matrix-test:
-    when: << pipeline.parameters.run_tests >>
+    when: << pipeline.parameters.run_matrix >>
     jobs:
       - matrix-test:
           matrix:
