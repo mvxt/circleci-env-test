@@ -81,6 +81,8 @@ workflows:
       - centos8-amd64
       - rhel8-amd64
       - debian-stretch-amd64
+      - debian-stretch-arm64
+      - ubuntu-arm64
 
   matrix-test:
     when: << pipeline.parameters.run_matrix >>
@@ -226,6 +228,20 @@ jobs:
     steps:
       - checkout
       - run: echo "Running on a Debian 9 (stretch) AMD64 runner!"
+
+  debian-stretch-arm64:
+    machine: true
+    resource_class: mvxt/debian-arm
+    steps:
+      - checkout
+      - run: echo "Running on a Debian 9 (stretch) Arm64 runner!"
+
+  ubuntu-arm64:
+    machine: true
+    resource_class: mvxt/ubuntu-arm
+    steps:
+      - checkout
+      - run: echo "Running on an Ubuntu 18.04 Arm64 runner!"
 
   trigger-deploys:
     executor: docker
