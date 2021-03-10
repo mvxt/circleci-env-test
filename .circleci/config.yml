@@ -16,6 +16,15 @@ parameters:
     description: Whether to initiate deployment
     type: boolean
     default: false
+  run_default:
+    type: boolean
+    default: true
+  run_runners_fleet:
+    type: boolean
+    default: false
+  run_workspace_test:
+    type: boolean
+    default: false
 
 #############
 # Executors
@@ -75,7 +84,20 @@ orbs:
 ############
 workflows:
   version: 2.1
+  run-default:
+    when: << pipeline.parameters.run_default >>
+    jobs:
+      - test:
+          context:
+            - mvxt-prod
+            - circle-api
+
+  run-workspace:
+    when: << pipeline.parmaeters.run_workspace_test >>
+    jobs:
+      - workspace-test
   runners-fleet:
+    when: << pipeline.parameters.run_runners_fleet >>
     jobs:
       - centos7-amd64
       - centos8-amd64
@@ -139,8 +161,7 @@ workflows:
 ##################
 jobs:
   test:
-    docker:
-      - image: cimg/base:stable
+    executor: docker
     steps:
       - checkout
       - run:
@@ -151,6 +172,24 @@ jobs:
           command: |
             cat test.sh
             ./test.sh
+      - persist_to_workspace:
+          root: .
+          paths:
+            - test.sh
+      - run:
+          name: trigger workspace-test
+          command: |
+            curl -u ${CIRCLE_TOKEN}: -X POST https://circleci.com/api/v2/project/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pipeline \
+              -H 'Content-Type: application/json' \
+              -H 'Accept: application/json' \
+              -d '{"branch": "'"${CIRCLE_BRANCH}"'", "parameters": {"run_default": false, "run_workspace_test": true}}'; \
+
+  workspace-test:
+    executor: docker
+    steps:
+      - attach_workspace:
+          at: .
+      - run: ./test.sh
 
   dlc-test:
     machine:
