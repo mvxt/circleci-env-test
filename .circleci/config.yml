@@ -96,6 +96,7 @@ workflows:
     when: << pipeline.parameters.run_workspace_test >>
     jobs:
       - workspace-test
+
   runners-fleet:
     when: << pipeline.parameters.run_runners_fleet >>
     jobs:
@@ -189,6 +190,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run: ls
       - run: ./test.sh
 
   dlc-test:
