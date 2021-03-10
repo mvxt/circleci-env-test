@@ -93,7 +93,7 @@ workflows:
             - circle-api
 
   run-workspace:
-    when: << pipeline.parmaeters.run_workspace_test >>
+    when: << pipeline.parameters.run_workspace_test >>
     jobs:
       - workspace-test
   runners-fleet:
