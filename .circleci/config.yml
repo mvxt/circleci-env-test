@@ -18,10 +18,10 @@ parameters:
     default: false
   run_default:
     type: boolean
-    default: true
+    default: false
   run_runners_fleet:
     type: boolean
-    default: false
+    default: true
   run_workspace_test:
     type: boolean
     default: false
@@ -100,11 +100,11 @@ workflows:
   runners-fleet:
     when: << pipeline.parameters.run_runners_fleet >>
     jobs:
-      - centos7-amd64
-      - centos8-amd64
-      - rhel8-amd64
-      - debian-stretch-amd64
-      - debian-stretch-arm64
+      #- centos7-amd64
+      #- centos8-amd64
+      #- rhel8-amd64
+      #- debian-stretch-amd64
+      #- debian-stretch-arm64
       - ubuntu-arm64
 
   matrix-test:
