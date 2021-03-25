@@ -292,7 +292,6 @@ jobs:
     steps:
       - checkout
       - run: echo "Running on a Docker image runner in Kubernetes!"
-      - run: which gcloud
       - run: sleep 30
 
   trigger-deploys:
