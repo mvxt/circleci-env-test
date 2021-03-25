@@ -105,7 +105,8 @@ workflows:
       #- rhel8-amd64
       #- debian-stretch-amd64
       #- debian-stretch-arm64
-      - ubuntu-arm64
+      #- ubuntu-arm64
+      - kubernetes
 
   matrix-test:
     when: << pipeline.parameters.run_matrix >>
@@ -283,6 +284,14 @@ jobs:
     steps:
       - checkout
       - run: echo "Running on an Ubuntu 18.04 Arm64 runner!"
+
+  kubernetes:
+    machine: true
+    resource_class: mvxt/k8s
+    steps:
+      - checkout
+      - run: echo "Running on a Docker image runner in Kubernetes!"
+      - run: sleep 30
 
   trigger-deploys:
     executor: docker
