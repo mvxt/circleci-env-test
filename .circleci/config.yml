@@ -288,6 +288,7 @@ jobs:
   kubernetes:
     machine: true
     resource_class: mvxt/k8s
+    parallelism: 5
     steps:
       - checkout
       - run: echo "Running on a Docker image runner in Kubernetes!"
