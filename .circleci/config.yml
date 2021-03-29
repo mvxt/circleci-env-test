@@ -21,7 +21,7 @@ parameters:
     default: false
   run_runners_fleet:
     type: boolean
-    default: true
+    default: false
   run_workspace_test:
     type: boolean
     default: false
@@ -149,6 +149,21 @@ workflows:
           filters:
             branches:
               only: master
+
+  misc:
+    jobs:
+      - test-pre-post:
+          name: Job succeeds
+          pre-steps:
+            - run: echo "Pre-job step!"
+          post-steps:
+            - run: echo "Post-job step!"
+      - test-pre-post:
+          name: Job fails
+          pre-steps:
+            - run: echo "Pre-job step!"
+          post-steps:
+            - run: echo "Post-job step!"
 
   deploy:
     when: << pipeline.parameters.deploy >>
@@ -321,3 +336,7 @@ jobs:
           name: Parameter example
           command: echo "DEPLOYING TO << parameters.env >>"
 
+  test-pre-post:
+    executor: docker
+    steps:
+      - run: echo "Inside the job!"
