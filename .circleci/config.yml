@@ -106,7 +106,7 @@ workflows:
       #- debian-stretch-amd64
       #- debian-stretch-arm64
       #- ubuntu-arm64
-      - kubernetes
+      #- kubernetes
 
   matrix-test:
     when: << pipeline.parameters.run_matrix >>
@@ -154,12 +154,14 @@ workflows:
     jobs:
       - test-pre-post:
           name: Job succeeds
+          command: exit 0
           pre-steps:
             - run: echo "Pre-job step!"
           post-steps:
             - run: echo "Post-job step!"
       - test-pre-post:
           name: Job fails
+          command: exit 1
           pre-steps:
             - run: echo "Pre-job step!"
           post-steps:
@@ -337,6 +339,10 @@ jobs:
           command: echo "DEPLOYING TO << parameters.env >>"
 
   test-pre-post:
+    parameters:
+      command:
+        description: command to run
+        type: string
     executor: docker
     steps:
-      - run: echo "Inside the job!"
+      - run: << parameters.command >>
