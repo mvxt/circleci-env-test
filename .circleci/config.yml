@@ -158,15 +158,18 @@ workflows:
           pre-steps:
             - run: echo "Pre-job step!"
           post-steps:
-            - run: echo "Post-job step!"
+            - run:
+                command: echo "Post-job step!"
+                when: always
       - test-pre-post:
           name: Job fails
           command: exit 1
           pre-steps:
             - run: echo "Pre-job step!"
           post-steps:
-            - run: echo "Post-job step!"
-              when: always
+            - run:
+                command: echo "Post-job step!"
+                when: always
 
   deploy:
     when: << pipeline.parameters.deploy >>
