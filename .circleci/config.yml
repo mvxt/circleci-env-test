@@ -166,6 +166,7 @@ workflows:
             - run: echo "Pre-job step!"
           post-steps:
             - run: echo "Post-job step!"
+              when: always
 
   deploy:
     when: << pipeline.parameters.deploy >>
