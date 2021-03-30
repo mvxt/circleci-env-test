@@ -154,14 +154,14 @@ workflows:
     jobs:
       - test-pre-post:
           name: Job succeeds
-          custom-command: exit 0
+          command: exit 0
           pre-steps:
             - run: echo "Pre-job step!"
           post-steps:
             - run: echo "Post-job step!"
       - test-pre-post:
           name: Job fails
-          custom-command: exit 1
+          command: exit 1
           pre-steps:
             - run: echo "Pre-job step!"
           post-steps:
@@ -340,7 +340,7 @@ jobs:
 
   test-pre-post:
     parameters:
-      custom-command:
+      command:
         description: command to run
         type: string
     executor: docker
