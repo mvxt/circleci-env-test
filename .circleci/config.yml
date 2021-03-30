@@ -106,7 +106,7 @@ workflows:
       #- debian-stretch-amd64
       #- debian-stretch-arm64
       #- ubuntu-arm64
-      #- kubernetes
+      - kubernetes
 
   matrix-test:
     when: << pipeline.parameters.run_matrix >>
