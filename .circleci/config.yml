@@ -15,7 +15,7 @@ parameters:
   deploy:
     description: Whether to initiate deployment
     type: boolean
-    default: false
+    default: true
   run_default:
     type: boolean
     default: false
