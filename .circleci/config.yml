@@ -178,11 +178,23 @@ workflows:
           matrix:
             parameters:
               env: ["AU", "EU", "Int", "Prod", "SA", "SEA"]
+      - deploy_test:
+          name: Deploy_env1
+          context: env1
+      - deploy_test:
+          name: Deploy_env2
+          context: env2
 
 ##################
 # Job Definitions
 ##################
 jobs:
+  deploy_test:
+    executor: docker
+    steps:
+      - checkout
+      - run: echo "$emaild"
+
   test:
     executor: docker
     steps:
