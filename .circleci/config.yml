@@ -181,22 +181,21 @@ workflows:
       - deploy:
           matrix:
             parameters:
-              env: ["AU", "EU", "Int", "Prod", "SA", "SEA"]
+              env: ["USA", "EU", "APAC"]
       - deploy_test:
-          env: env1
+          name: deploy-1
           context: env1
       - deploy_test:
-          env: env2
+          name: deploy-2
           context: env2
+          requires:
+            - deploy-1
 
 ##################
 # Job Definitions
 ##################
 jobs:
   deploy_test:
-    parameters:
-      env:
-        type: string
     executor: docker
     steps:
       - checkout
