@@ -25,6 +25,9 @@ parameters:
   run_workspace_test:
     type: boolean
     default: false
+  run_misc:
+    type: boolean
+    default: false
 
 #############
 # Executors
@@ -151,6 +154,7 @@ workflows:
               only: master
 
   misc:
+    when: << pipeline.parameters.run_misc >>
     jobs:
       - test-pre-post:
           name: Job succeeds
@@ -179,10 +183,10 @@ workflows:
             parameters:
               env: ["AU", "EU", "Int", "Prod", "SA", "SEA"]
       - deploy_test:
-          name: Deploy_env1
+          env: env1
           context: env1
       - deploy_test:
-          name: Deploy_env2
+          env: env2
           context: env2
 
 ##################
@@ -190,6 +194,10 @@ workflows:
 ##################
 jobs:
   deploy_test:
+    parameters:
+      env:
+        type: string
+    name: deploy-<< parameters.env >>
     executor: docker
     steps:
       - checkout
