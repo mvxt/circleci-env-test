@@ -197,7 +197,6 @@ jobs:
     parameters:
       env:
         type: string
-    name: deploy-<< parameters.env >>
     executor: docker
     steps:
       - checkout
