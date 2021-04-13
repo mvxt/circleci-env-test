@@ -200,6 +200,7 @@ jobs:
     steps:
       - checkout
       - run: echo "$emaild"
+      - run: echo "<< pipeline.git.revision >>"
 
   test:
     executor: docker
