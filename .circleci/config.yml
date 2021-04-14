@@ -15,7 +15,7 @@ parameters:
   deploy:
     description: Whether to initiate deployment
     type: boolean
-    default: true
+    default: false 
   run_default:
     type: boolean
     default: false
@@ -28,6 +28,9 @@ parameters:
   run_misc:
     type: boolean
     default: false
+  run_heredoc:
+    type: boolean
+    default: true
 
 #############
 # Executors
@@ -190,6 +193,11 @@ workflows:
           context: env2
           requires:
             - deploy-1
+
+  heredoc:
+    when: << pipeline.parameters.run_heredoc >>
+    jobs:
+      - multiline-bash-test
 
 ##################
 # Job Definitions
@@ -369,3 +377,12 @@ jobs:
     executor: docker
     steps:
       - run: << parameters.command >>
+
+  multiline-bash-test:
+    executor: docker
+    steps:
+      - run: |-
+          while true; do
+            echo "test!?"
+            sleep 1
+          done
