@@ -27,10 +27,10 @@ parameters:
     default: false
   run_misc:
     type: boolean
-    default: false
+    default: true 
   run_heredoc:
     type: boolean
-    default: true
+    default: false
 
 #############
 # Executors
