@@ -106,9 +106,9 @@ workflows:
   runners-fleet:
     when: << pipeline.parameters.run_runners_fleet >>
     jobs:
-      - centos7-amd64
+      #- centos7-amd64
       #- centos8-amd64
-      #- rhel8-amd64
+      - rhel8-amd64
       #- debian-stretch-amd64
       #- debian-stretch-arm64
       #- ubuntu-arm64
