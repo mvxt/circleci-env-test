@@ -21,13 +21,13 @@ parameters:
     default: false
   run_runners_fleet:
     type: boolean
-    default: true
+    default: false 
   run_workspace_test:
     type: boolean
     default: false
   run_misc:
     type: boolean
-    default: false
+    default: true
   run_heredoc:
     type: boolean
     default: false
@@ -159,24 +159,25 @@ workflows:
   misc:
     when: << pipeline.parameters.run_misc >>
     jobs:
-      - test-pre-post:
-          name: Job succeeds
-          command: exit 0
-          pre-steps:
-            - run: echo "Pre-job step!"
-          post-steps:
-            - run:
-                command: echo "Post-job step!"
-                when: always
-      - test-pre-post:
-          name: Job fails
-          command: exit 1
-          pre-steps:
-            - run: echo "Pre-job step!"
-          post-steps:
-            - run:
-                command: echo "Post-job step!"
-                when: always
+      #- test-pre-post:
+      #    name: Job succeeds
+      #    command: exit 0
+      #    pre-steps:
+      #      - run: echo "Pre-job step!"
+      #    post-steps:
+      #      - run:
+      #          command: echo "Post-job step!"
+      #          when: always
+      #- test-pre-post:
+      #    name: Job fails
+      #    command: exit 1
+      #    pre-steps:
+      #      - run: echo "Pre-job step!"
+      #    post-steps:
+      #      - run:
+      #          command: echo "Post-job step!"
+      #          when: always
+      - powershell-test
 
   deploy:
     when: << pipeline.parameters.deploy >>
@@ -203,6 +204,14 @@ workflows:
 # Job Definitions
 ##################
 jobs:
+  powershell-test:
+    executor: win/default
+    steps:
+      - checkout
+      - run:
+          command: powershell/hello.ps1
+          shell: powershell.exe
+
   deploy_test:
     executor: docker
     steps:
