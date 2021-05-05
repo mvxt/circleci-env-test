@@ -177,7 +177,10 @@ workflows:
       #      - run:
       #          command: echo "Post-job step!"
       #          when: always
-      - powershell-test
+      #- powershell-test
+      - parallel-workspace1
+      - parallel-workspace2:
+          requires: parallel-workspace1
 
   deploy:
     when: << pipeline.parameters.deploy >>
@@ -395,3 +398,20 @@ jobs:
             echo "test!?"
             sleep 1
           done
+
+  parallel-workspace1:
+    executor: docker
+    parallelism: 2
+    steps:
+      - run: echo "Hello from $CIRCLE_NODE_INDEX!" > file-${CIRCLE_NODE_INDEX}.txt
+      - persist_to_workspace:
+          root: .
+          paths:
+            - *.txt
+
+  parallel-workspace2:
+    executor: docker
+    steps:
+      - attach_workspace:
+          at: .
+      - run: ls
