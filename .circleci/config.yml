@@ -407,7 +407,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - *.txt
+            - "*.txt"
 
   parallel-workspace2:
     executor: docker
