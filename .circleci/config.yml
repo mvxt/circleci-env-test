@@ -180,7 +180,8 @@ workflows:
       #- powershell-test
       - parallel-workspace1
       - parallel-workspace2:
-          requires: parallel-workspace1
+          requires:
+            - parallel-workspace1
 
   deploy:
     when: << pipeline.parameters.deploy >>
