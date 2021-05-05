@@ -11,7 +11,7 @@ parameters:
   run_matrix:
     description: Whether to run matrix jobs
     type: boolean
-    default: false
+    default: true
   deploy:
     description: Whether to initiate deployment
     type: boolean
